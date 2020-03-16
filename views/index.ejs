@@ -21,7 +21,7 @@
     <div class="container">
       <h1>Url Shortener</h1>
       <form class="form-inline my-5" action="/shortUrl" method="POST">
-        <input class="form-control col mr-3" type="url" />
+        <input name="full" required class="form-control col mr-3" type="url" />
         <button type="submit" class="btn btn-success ">Shrink</button>
       </form>
       <table class="table table-responsive table-striped">
@@ -31,13 +31,20 @@
           <th>Clicks</th>
         </tr>
 
-        <% shortUrls.forEach(url => {%>
+        <% if(shortUrls.length) shortUrls.forEach(url => {%>
 
         <tr>
           <th><%= url.full %></th>
           <th class="custom">
-            <a class="mr-2 d-inline" href="<%= url.full%>"><%= url.short%></a>
-            <button class=" d-inline btn btn-danger ">delete</button>
+            <a class="mr-2 d-inline " href="<%= url.short%>"><%= url.short%></a>
+            <form action="/<%=url.short%>?_method=DELETE" method="POST">
+              <button type="submit" class=" d-inline btn btn-danger delete">
+                delete
+              </button>
+            </form>
+            <form action="/reset/<%=url.short%>?_method=PUT" method="POST">
+              <button class="btn btn-primary ml-3" type="submit">Reset</button>
+            </form>
           </th>
           <th><%= url.clicks%></th>
         </tr>
